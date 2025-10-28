@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الطرائق العلمية والبحث العلمي</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a5f7a 0%, #159895 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a5f7a 0%, #159895 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .question-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .question-container.active {
+            display: block;
+        }
+        
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            line-height: 1.6;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            border-right: 5px solid #1a5f7a;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            padding: 15px 20px;
+            background-color: #f1f3f4;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .option:hover {
+            background-color: #e3f2fd;
+            border-color: #1a5f7a;
+            transform: translateY(-3px);
+        }
+        
+        .option.selected {
+            background-color: #1a5f7a;
+            color: white;
+            border-color: #1a5f7a;
+        }
+        
+        .option.correct {
+            background-color: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+        
+        .option.incorrect {
+            background-color: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .feedback.correct {
+            background-color: #e8f5e9;
+            border-right: 5px solid #4caf50;
+            color: #2e7d32;
+        }
+        
+        .feedback.incorrect {
+            background-color: #ffebee;
+            border-right: 5px solid #f44336;
+            color: #c62828;
+        }
+        
+        .answer {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #1a5f7a 0%, #159895 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .results-container {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .results-container.active {
+            display: block;
+        }
+        
+        .score {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #1a5f7a;
+            margin: 20px 0;
+        }
+        
+        .grade {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .team-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+            border-right: 5px solid #1a5f7a;
+        }
+        
+        .team-info h3 {
+            color: #1a5f7a;
+            margin-bottom: 15px;
+        }
+        
+        .team-info p {
+            margin: 8px 0;
+            font-size: 1.1rem;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(135deg, #1a5f7a 0%, #159895 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .question-number {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .question {
+                font-size: 1.3rem;
+            }
+            
+            .option {
+                font-size: 1rem;
+            }
+            
+            button {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>اختبار الطرائق العلمية والبحث العلمي</h1>
+            <p>اختبار تفاعلي يشمل 35 سؤالاً</p>
+        </div>
+        
+        <div class="content">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            
+            <!-- الأسئلة من 1 إلى 35 -->
+            <div class="question-container active" id="question1">
+                <div class="question-number">السؤال 1 من 35</div>
+                <div class="question">ما المقصود بالطريقة العلمية؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- أسلوب منظم لدراسة الظواهر وحل المشكلات</div>
+                    <div class="option" data-correct="false">ب- تخمين يعتمد على الحدس</div>
+                    <div class="option" data-correct="false">ج- سرد المعلومات بدون تجربة</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- أسلوب منظم لدراسة الظواهر وحل المشكلات</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="next1" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question2">
+                <div class="question-number">السؤال 2 من 35</div>
+                <div class="question">ما أول خطوة في الطريقة العلمية؟</div>
+                <div class="options">
+                    <div class="option" data-correct="false">أ- وضع الفرضية</div>
+                    <div class="option" data-correct="true">ب- تحديد المشكلة أو طرح السؤال</div>
+                    <div class="option" data-correct="false">ج- تحليل البيانات</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: ب- تحديد المشكلة أو طرح السؤال</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev2">السابق</button>
+                    <button id="next2" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question3">
+                <div class="question-number">السؤال 3 من 35</div>
+                <div class="question">أي من الخطوات التالية تُمثل جزءًا من الطريقة العلمية؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- جمع البيانات وتحليلها</div>
+                    <div class="option" data-correct="false">ب- تجاهل الملاحظات</div>
+                    <div class="option" data-correct="false">ج- عرض النتائج دون تجربة</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- جمع البيانات وتحليلها</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev3">السابق</button>
+                    <button id="next3" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question4">
+                <div class="question-number">السؤال 4 من 35</div>
+                <div class="question">أي مما يلي يهدف إليه استخدام الطريقة العلمية؟</div>
+                <div class="options">
+                    <div class="option" data-correct="false">أ- إثبات الآراء الشخصية</div>
+                    <div class="option" data-correct="true">ب- الوصول إلى نتائج دقيقة مبنية على أدلة</div>
+                    <div class="option" data-correct="false">ج- زيادة عدد التجارب فقط</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: ب- الوصول إلى نتائج دقيقة مبنية على أدلة</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev4">السابق</button>
+                    <button id="next4" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question5">
+                <div class="question-number">السؤال 5 من 35</div>
+                <div class="question">البيانات التي تُعبّر بالأرقام تُسمى:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- بيانات كمية</div>
+                    <div class="option" data-correct="false">ب- بيانات وصفية</div>
+                    <div class="option" data-correct="false">ج- بيانات عامة</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- بيانات كمية</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev5">السابق</button>
+                    <button id="next5" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question6">
+                <div class="question-number">السؤال 6 من 35</div>
+                <div class="question">عندما نصف لون الزهرة أو رائحتها، فإننا نسجل:</div>
+                <div class="options">
+                    <div class="option" data-correct="false">أ- بيانات كمية</div>
+                    <div class="option" data-correct="true">ب- بيانات وصفية</div>
+                    <div class="option" data-correct="false">ج- بيانات تجريبية</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: ب- بيانات وصفية</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev6">السابق</button>
+                    <button id="next6" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question7">
+                <div class="question-number">السؤال 7 من 35</div>
+                <div class="question">ما الفرق بين الفرضية والنظرية؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- الفرضية تفسير مبدئي، والنظرية تفسير مدعوم بأدلة</div>
+                    <div class="option" data-correct="false">ب- الفرضية قانون دائم</div>
+                    <div class="option" data-correct="false">ج- النظرية تخمين غير مثبت</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- الفرضية تفسير مبدئي، والنظرية تفسير مدعوم بأدلة</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev7">السابق</button>
+                    <button id="next7" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question8">
+                <div class="question-number">السؤال 8 من 35</div>
+                <div class="question">القانون العلمي يختلف عن النظرية بأنه:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- يصف ما يحدث دائماً في الطبيعة</div>
+                    <div class="option" data-correct="false">ب- يفسر سبب حدوث الظاهرة</div>
+                    <div class="option" data-correct="false">ج- يعتمد على الملاحظات فقط</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- يصف ما يحدث دائماً في الطبيعة</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev8">السابق</button>
+                    <button id="next8" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question9">
+                <div class="question-number">السؤال 9 من 35</div>
+                <div class="question">أي مما يلي يُعد فرضية علمية صحيحة؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- "إذا ارتفعت درجة الحرارة، فإن سرعة التفاعل الكيميائي تزداد."</div>
+                    <div class="option" data-correct="false">ب- "الماء سائل في درجة الحرارة العادية."</div>
+                    <div class="option" data-correct="false">ج- "الجاذبية تسحب الأجسام نحو الأرض."</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- "إذا ارتفعت درجة الحرارة، فإن سرعة التفاعل الكيميائي تزداد."</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev9">السابق</button>
+                    <button id="next9" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question10">
+                <div class="question-number">السؤال 10 من 35</div>
+                <div class="question">المتغير المستقل هو:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- العامل الذي يغيّره الباحث أثناء التجربة</div>
+                    <div class="option" data-correct="false">ب- العامل الذي يقاس في النهاية</div>
+                    <div class="option" data-correct="false">ج- العامل الذي يبقى ثابتًا</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- العامل الذي يغيّره الباحث أثناء التجربة</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev10">السابق</button>
+                    <button id="next10" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question11">
+                <div class="question-number">السؤال 11 من 35</div>
+                <div class="question">المتغير التابع هو:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- العامل الذي يُقاس لمعرفة تأثير التغيرات</div>
+                    <div class="option" data-correct="false">ب- العامل الذي لا يتغير</div>
+                    <div class="option" data-correct="false">ج- العامل الذي يتم اختياره عشوائيًا</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- العامل الذي يُقاس لمعرفة تأثير التغيرات</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev11">السابق</button>
+                    <button id="next11" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question12">
+                <div class="question-number">السؤال 12 من 35</div>
+                <div class="question">ما المقصود بالمتغيرات الثابتة؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- عوامل لا تتغير طوال التجربة</div>
+                    <div class="option" data-correct="false">ب- عوامل تتغير باستمرار</div>
+                    <div class="option" data-correct="false">ج- عوامل يتم قياسها فقط</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- عوامل لا تتغير طوال التجربة</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev12">السابق</button>
+                    <button id="next12" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question13">
+                <div class="question-number">السؤال 13 من 35</div>
+                <div class="question">الهدف من التجربة هو:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- اختبار الفرضية والتحقق منها</div>
+                    <div class="option" data-correct="false">ب- جمع بيانات دون غاية</div>
+                    <div class="option" data-correct="false">ج- تغيير المتغيرات فقط</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- اختبار الفرضية والتحقق منها</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev13">السابق</button>
+                    <button id="next13" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question14">
+                <div class="question-number">السؤال 14 من 35</div>
+                <div class="question">عند تحليل النتائج، على الباحث أن:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- يربط النتائج بالفرضية</div>
+                    <div class="option" data-correct="false">ب- يتجاهل القيم غير المتوقعة</div>
+                    <div class="option" data-correct="false">ج- يعتمد على الحظ</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- يربط النتائج بالفرضية</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev14">السابق</button>
+                    <button id="next14" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question15">
+                <div class="question-number">السؤال 15 من 35</div>
+                <div class="question">أي من الخطوات تأتي بعد التجربة؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- استخلاص النتائج</div>
+                    <div class="option" data-correct="false">ب- تحديد الفرضية</div>
+                    <div class="option" data-correct="false">ج- طرح السؤال</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- استخلاص النتائج</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev15">السابق</button>
+                    <button id="next15" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question16">
+                <div class="question-number">السؤال 16 من 35</div>
+                <div class="question">ما الهدف من النتائج في التجربة؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- تفسير ما تم ملاحظته وتحديد دلالته</div>
+                    <div class="option" data-correct="false">ب- حفظ البيانات دون تحليل</div>
+                    <div class="option" data-correct="false">ج- إعادة التجربة فقط</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- تفسير ما تم ملاحظته وتحديد دلالته</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev16">السابق</button>
+                    <button id="next16" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question17">
+                <div class="question-number">السؤال 17 من 35</div>
+                <div class="question">لماذا يُفضل تكرار التجربة أكثر من مرة؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- للتحقق من دقة النتائج</div>
+                    <div class="option" data-correct="false">ب- لتغيير الفرضية</div>
+                    <div class="option" data-correct="false">ج- لتقليل عدد الملاحظات</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- للتحقق من دقة النتائج</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev17">السابق</button>
+                    <button id="next17" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question18">
+                <div class="question-number">السؤال 18 من 35</div>
+                <div class="question">عندما تقارن بين بيانات تجربتين مختلفتين فإنك تستخدم مهارة:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- التحليل</div>
+                    <div class="option" data-correct="false">ب- التذكر</div>
+                    <div class="option" data-correct="false">ج- التخمين</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- التحليل</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev18">السابق</button>
+                    <button id="next18" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question19">
+                <div class="question-number">السؤال 19 من 35</div>
+                <div class="question">إذا لم تؤيد النتائج الفرضية، فإن الخطوة التالية هي:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- تعديل الفرضية أو إعادة التجربة</div>
+                    <div class="option" data-correct="false">ب- تجاهل البيانات</div>
+                    <div class="option" data-correct="false">ج- إعلان النتيجة نهائية</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- تعديل الفرضية أو إعادة التجربة</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev19">السابق</button>
+                    <button id="next19" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question20">
+                <div class="question-number">السؤال 20 من 35</div>
+                <div class="question">أي من التالي يمثل استخدامًا صحيحًا للطريقة العلمية؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- اختبار عامل واحد في كل مرة</div>
+                    <div class="option" data-correct="false">ب- تغيير جميع العوامل في التجربة</div>
+                    <div class="option" data-correct="false">ج- تسجيل الملاحظات فقط</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- اختبار عامل واحد في كل مرة</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev20">السابق</button>
+                    <button id="next20" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question21">
+                <div class="question-number">السؤال 21 من 35</div>
+                <div class="question">البحث العلمي هو:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- عملية منظمة تهدف إلى اكتساب معرفة جديدة</div>
+                    <div class="option" data-correct="false">ب- عمل يعتمد على التخمينات</div>
+                    <div class="option" data-correct="false">ج- تجربة عشوائية</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- عملية منظمة تهدف إلى اكتساب معرفة جديدة</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev21">السابق</button>
+                    <button id="next21" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question22">
+                <div class="question-number">السؤال 22 من 35</div>
+                <div class="question">الفرق بين البحث النظري والتطبيقي هو أن:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- النظري يهدف إلى الفهم، والتطبيقي لحل المشكلات</div>
+                    <div class="option" data-correct="false">ب- التطبيقي لا يعتمد على التجربة</div>
+                    <div class="option" data-correct="false">ج- النظري يستخدم مواد كيميائية فقط</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- النظري يهدف إلى الفهم، والتطبيقي لحل المشكلات</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev22">السابق</button>
+                    <button id="next22" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question23">
+                <div class="question-number">السؤال 23 من 35</div>
+                <div class="question">من أمثلة البحث النظري:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- دراسة تركيب الذرة</div>
+                    <div class="option" data-correct="false">ب- تطوير دواء جديد</div>
+                    <div class="option" data-correct="false">ج- اختراع آلة كهربائية</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- دراسة تركيب الذرة</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev23">السابق</button>
+                    <button id="next23" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question24">
+                <div class="question-number">السؤال 24 من 35</div>
+                <div class="question">من أمثلة البحث التطبيقي:</div>
+                <div class="options">
+                    <div class="option" data-correct="false">أ- اكتشاف تركيب الماء</div>
+                    <div class="option" data-correct="true">ب- تطوير علاج للسرطان</div>
+                    <div class="option" data-correct="false">ج- دراسة الضوء</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: ب- تطوير علاج للسرطان</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev24">السابق</button>
+                    <button id="next24" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question25">
+                <div class="question-number">السؤال 25 من 35</div>
+                <div class="question">من تعليمات السلامة في المختبر:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- ارتداء المعطف والنظارات الواقية</div>
+                    <div class="option" data-correct="false">ب- لمس المواد باليد مباشرة</div>
+                    <div class="option" data-correct="false">ج- الأكل أثناء التجربة</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- ارتداء المعطف والنظارات الواقية</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev25">السابق</button>
+                    <button id="next25" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question26">
+                <div class="question-number">السؤال 26 من 35</div>
+                <div class="question">عند حدوث تسرب كيميائي في المختبر، يجب:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- إخبار المعلم فوراً</div>
+                    <div class="option" data-correct="false">ب- تنظيفه بقطعة قماش</div>
+                    <div class="option" data-correct="false">ج- تجاهله</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- إخبار المعلم فوراً</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev26">السابق</button>
+                    <button id="next26" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question27">
+                <div class="question-number">السؤال 27 من 35</div>
+                <div class="question">لماذا تُعد السلامة في المختبر مهمة؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- لحماية الأفراد والمعدات</div>
+                    <div class="option" data-correct="false">ب- لتسريع التجربة</div>
+                    <div class="option" data-correct="false">ج- لزيادة النتائج</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- لحماية الأفراد والمعدات</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev27">السابق</button>
+                    <button id="next27" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question28">
+                <div class="question-number">السؤال 28 من 35</div>
+                <div class="question">من فوائد دراسة الكيمياء:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- إنتاج أدوية ومواد مفيدة</div>
+                    <div class="option" data-correct="false">ب- تقليل الموارد الطبيعية</div>
+                    <div class="option" data-correct="false">ج- زيادة الحوادث</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- إنتاج أدوية ومواد مفيدة</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev28">السابق</button>
+                    <button id="next28" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question29">
+                <div class="question-number">السؤال 29 من 35</div>
+                <div class="question">كيف ساهمت الكيمياء في حياتنا اليومية؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- في صناعة الأدوية والمنظفات والوقود</div>
+                    <div class="option" data-correct="false">ب- في تقليل جودة الهواء</div>
+                    <div class="option" data-correct="false">ج- في الحد من الاكتشافات</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- في صناعة الأدوية والمنظفات والوقود</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev29">السابق</button>
+                    <button id="next29" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question30">
+                <div class="question-number">السؤال 30 من 35</div>
+                <div class="question">ما المقصود بالاكتشافات غير المقصودة؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- اكتشافات حدثت بالصدفة وأفادت البشرية</div>
+                    <div class="option" data-correct="false">ب- نتائج خاطئة لا فائدة منها</div>
+                    <div class="option" data-correct="false">ج- تجارب ناقصة</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- اكتشافات حدثت بالصدفة وأفادت البشرية</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev30">السابق</button>
+                    <button id="next30" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question31">
+                <div class="question-number">السؤال 31 من 35</div>
+                <div class="question">أي من الأمثلة تمثل اكتشافًا غير مقصود؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- اكتشاف البنسلين</div>
+                    <div class="option" data-correct="false">ب- اكتشاف الذرة</div>
+                    <div class="option" data-correct="false">ج- اكتشاف الجدول الدوري</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- اكتشاف البنسلين</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev31">السابق</button>
+                    <button id="next31" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question32">
+                <div class="question-number">السؤال 32 من 35</div>
+                <div class="question">تسجيل الملاحظات أثناء التجربة يساعد على:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- دقة النتائج وتحليلها</div>
+                    <div class="option" data-correct="false">ب- حفظ الوقت فقط</div>
+                    <div class="option" data-correct="false">ج- زيادة عدد الأخطاء</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- دقة النتائج وتحليلها</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev32">السابق</button>
+                    <button id="next32" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question33">
+                <div class="question-number">السؤال 33 من 35</div>
+                <div class="question">استخدام الرسوم البيانية في عرض البيانات يهدف إلى:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- توضيح العلاقات بين المتغيرات بصرياً</div>
+                    <div class="option" data-correct="false">ب- تزيين التقرير</div>
+                    <div class="option" data-correct="false">ج- حفظ الألوان</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- توضيح العلاقات بين المتغيرات بصرياً</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev33">السابق</button>
+                    <button id="next33" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question34">
+                <div class="question-number">السؤال 34 من 35</div>
+                <div class="question">من خصائص الباحث العلمي الجيد:</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- الدقة والموضوعية والصبر</div>
+                    <div class="option" data-correct="false">ب- التسرع والعشوائية</div>
+                    <div class="option" data-correct="false">ج- الاعتماد على الحظ</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- الدقة والموضوعية والصبر</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev34">السابق</button>
+                    <button id="next34" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="question-container" id="question35">
+                <div class="question-number">السؤال 35 من 35</div>
+                <div class="question">ما القيمة التي تؤكد عليها أخلاقيات البحث العلمي؟</div>
+                <div class="options">
+                    <div class="option" data-correct="true">أ- الأمانة في نقل النتائج وتوثيق المصادر</div>
+                    <div class="option" data-correct="false">ب- إخفاء الأخطاء</div>
+                    <div class="option" data-correct="false">ج- تقليد أبحاث الآخرين</div>
+                </div>
+                <div class="feedback incorrect">
+                    <strong>إجابة خاطئة!</strong>
+                    <div class="answer">الإجابة الصحيحة: أ- الأمانة في نقل النتائج وتوثيق المصادر</div>
+                </div>
+                <div class="feedback correct">
+                    <strong>إجابة صحيحة! أحسنت!</strong>
+                </div>
+                <div class="buttons">
+                    <button id="prev35">السابق</button>
+                    <button id="next35" disabled>التالي</button>
+                </div>
+            </div>
+
+            <div class="results-container" id="results">
+                <h2>نتيجة الاختبار</h2>
+                <div class="score" id="finalScore">0/35</div>
+                <div class="grade" id="grade">التقدير: -</div>
+                
+                <div class="team-info">
+                    <h3>فريق العمل</h3>
+                    <p>تميم المالكي</p>
+                    <p>محمد المطاوعه</p>
+                    <p>سعود القحطاني</p>
+                    <p>سلطان العثمان</p>
+                    <p>راكان العنزي</p>
+                    <p>فراس المسعد</p>
+                    <p>يوسف الغامدي</p>
+                    <p>الدرجة: <span id="finalGrade">-</span></p>
+                    <p>التقدير: <span id="finalRating">-</span></p>
+                </div>
+                
+                <button id="restart">إعادة الاختبار</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 35;
+        let score = 0;
+        let userAnswers = new Array(totalQuestions).fill(null);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            initializeEventListeners();
+        });
+
+        function updateProgress() {
+            const progress = document.getElementById('progress');
+            const percentage = ((currentQuestion - 1) / totalQuestions) * 100;
+            progress.style.width = percentage + '%';
+        }
+
+        function initializeEventListeners() {
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const nextBtn = document.getElementById(`next${i}`);
+                const prevBtn = document.getElementById(`prev${i}`);
+                
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => navigateToQuestion(i + 1));
+                }
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', () => navigateToQuestion(i - 1));
+                }
+            }
+
+            document.getElementById('restart').addEventListener('click', restartQuiz);
+        }
+
+        function handleOptionClick(event) {
+            const option = event.currentTarget;
+            const questionContainer = option.closest('.question-container');
+            const options = questionContainer.querySelectorAll('.option');
+            const feedbackCorrect = questionContainer.querySelector('.feedback.correct');
+            const feedbackIncorrect = questionContainer.querySelector('.feedback.incorrect');
+            const nextButton = questionContainer.querySelector('button:disabled');
+            const questionId = parseInt(questionContainer.id.replace('question', ''));
+
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            option.classList.add('selected');
+
+            const isCorrect = option.getAttribute('data-correct') === 'true';
+            
+            if (isCorrect) {
+                option.classList.add('correct');
+                feedbackCorrect.style.display = 'block';
+                feedbackIncorrect.style.display = 'none';
+                if (userAnswers[questionId - 1] === null) {
+                    score++;
+                }
+            } else {
+                option.classList.add('incorrect');
+                feedbackIncorrect.style.display = 'block';
+                feedbackCorrect.style.display = 'none';
+                
+                const correctOption = questionContainer.querySelector('.option[data-correct="true"]');
+                correctOption.classList.add('correct');
+            }
+
+            userAnswers[questionId - 1] = isCorrect;
+
+            if (nextButton) {
+                nextButton.disabled = false;
+            }
+        }
+
+        function navigateToQuestion(questionNumber) {
+            if (questionNumber < 1 || questionNumber > totalQuestions + 1) return;
+
+            document.getElementById(`question${currentQuestion}`).classList.remove('active');
+
+            if (questionNumber === totalQuestions + 1) {
+                showResults();
+            } else {
+                currentQuestion = questionNumber;
+                document.getElementById(`question${currentQuestion}`).classList.add('active');
+                updateProgress();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('results').classList.add('active');
+            document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
+            
+            const percentage = (score / totalQuestions) * 100;
+            let grade, finalGrade;
+            
+            if (percentage >= 90) {
+                grade = 'امتياز';
+                finalGrade = 'A+';
+            } else if (percentage >= 80) {
+                grade = 'جيد جداً';
+                finalGrade = 'A';
+            } else if (percentage >= 70) {
+                grade = 'جيد';
+                finalGrade = 'B';
+            } else if (percentage >= 60) {
+                grade = 'مقبول';
+                finalGrade = 'C';
+            } else {
+                grade = 'راسب';
+                finalGrade = 'F';
+            }
+            
+            document.getElementById('grade').textContent = `التقدير: ${grade}`;
+            document.getElementById('finalGrade').textContent = finalGrade;
+            document.getElementById('finalRating').textContent = grade;
+        }
+
+        function restartQuiz() {
+            score = 0;
+            currentQuestion = 1;
+            userAnswers.fill(null);
+            
+            document.querySelectorAll('.question-container').forEach(container => {
+                container.classList.remove('active');
+                container.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+                container.querySelectorAll('.feedback').forEach(feedback => {
+                    feedback.style.display = 'none';
+                });
+                container.querySelectorAll('button').forEach(button => {
+                    if (button.id.startsWith('next')) {
+                        button.disabled = true;
+                    }
+                });
+            });
+            
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('question1').classList.add('active');
+            updateProgress();
+        }
+    </script>
+</body>
+</html>
